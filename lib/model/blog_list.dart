@@ -1,18 +1,17 @@
-import 'package:event_app/UI/screen_card.dart';
 import 'package:event_app/fetch_event.dart';
-import 'package:event_app/model/event.dart';
-import 'package:event_app/screens/event_detail.dart';
+import 'package:event_app/model/blog.dart';
+import 'package:event_app/screens/blog_detail.dart';
 import 'package:flutter/material.dart';
 
-class EventListView extends StatelessWidget {
+class BlogListView extends StatelessWidget {
   final List<Event> events;
 
-  const EventListView({super.key, required this.events});
+  const BlogListView({Key? key, required this.events}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Event>>(
-      future: fetchEvents(),
+      future: fetchBlogs(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -28,17 +27,23 @@ class EventListView extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => EventDetailPage(event: event),
+                      builder: (context) => BlogDetailPage(event: event),
                     ),
                   );
                 },
-                child: SearchEventsCard(
-                  bannerImage: event.bannerImage,
-                  title: event.title,
-                  venueName: event.venueName,
-                  venueCity: event.venueCity,
-                  dateTime: event.dateTime,
-                  venueCountry: event.venueCountry,
+                child: Card(
+                  child: Column(
+                    children: [
+                      Image.network(
+                        event.bannerImage,
+                        fit: BoxFit.cover,
+                        height: 150, 
+                      ),
+                      ListTile(
+                        title: Text(event.title),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

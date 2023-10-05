@@ -1,30 +1,29 @@
-import 'package:event_app/model/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:event_app/model/blog.dart';
 
-Future<List<Event>> fetchEvents() async {
-  final response = await http.get(
-    Uri.parse(
-      'https://sde-007.api.assignment.theinternetfolks.works/v1/event',
-    ),
-  );
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> data = json.decode(response.body);
-    final List<dynamic> eventsData = data['content']['data'];
 
-    List<Event> events = eventsData.map((eventData) => Event(
-          bannerImage: eventData['banner_image'],
-          title: eventData['title'],
-          dateTime: DateTime.parse(eventData['date_time']),
-          venueName: eventData['venue_name'],
-          venueCity: eventData['venue_city'],
-          venueCountry: eventData['venue_country'],
-          description: eventData['description'],
-          organiserName: eventData['organiser_name'],
-          organiserIcon: eventData['organiser_icon'],
-        )).toList();
-    return events;
-  } else {
-    throw Exception('Failed to load events');
+Future<List<Event>> fetchBlogs() async {
+  final String url = 'https://intent-kit-16.hasura.app/api/rest/blogs';
+  final String adminSecret = '32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6';
+
+  try {
+    final response = await http.get(Uri.parse(url), headers: {
+      'x-hasura-admin-secret': adminSecret,
+    });
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['blogs'];
+      List<Event> events = data.map((blogData) => Event(
+        id: blogData['id'],
+        bannerImage: blogData['image_url'],
+        title: blogData['title'],
+      )).toList();
+      return events;
+    } else {
+      throw Exception('Failed to load events');
+    }
+  } catch (e) {
+    throw Exception('Error: $e');
   }
 }

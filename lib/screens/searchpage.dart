@@ -1,5 +1,5 @@
-import 'package:event_app/model/event_list.dart';
-import 'package:event_app/model/event.dart';
+import 'package:event_app/model/blog_list.dart';
+import 'package:event_app/model/blog.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -71,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
             Expanded(
-              child: EventListView(events: filteredEvents),
+              child: BlogListView(events: filteredEvents),
             )
           ],
         ),

@@ -1,22 +1,28 @@
+import 'package:event_app/favourite_controller.dart';
 import 'package:event_app/screens/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(GetMaterialApp(
+    home: const MyApp(),
+    initialBinding: BindingsBuilder(() {
+      Get.put(FavoriteController());
+    }),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme:ThemeData(
+      theme: ThemeData(
         brightness: Brightness.light,
       ),
-      home:const HomePage() ,
+      home: HomePage(),
     );
   }
 }
-
